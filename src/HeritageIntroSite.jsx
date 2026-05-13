@@ -1,415 +1,268 @@
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  Banknote,
-  Building2,
-  Coins,
-  HeartPulse,
-  Landmark,
-  Layers3,
-  ShieldCheck,
-  Sparkles,
-  Trophy,
-  Users,
-  WalletCards,
-  Globe2,
-  Menu,
-  X,
-} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { ArrowRight, Building2, HeartPulse, Landmark, Menu, Network, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
-const verticals = [
+const navLinks = [
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Focus Areas", href: "#focus-areas" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
+const projects = [
   {
-    title: "Web3.0 Banking",
-    eyebrow: "Digital finance infrastructure",
-    icon: Banknote,
+    name: "Heritage / RickyPark RWA Platform",
+    url: "https://www.rickypark.com/",
+    status: "Under Development",
+    category: ["RWA", "Infrastructure"],
     description:
-      "A next-generation banking ecosystem designed for borderless payments, digital wallets, on-chain value movement, and compliant financial access.",
-    points: ["Digital wallets", "Global payments", "Token-ready infrastructure"],
+      "A developing real-world asset platform exploring exceptional asset registry, custody context, provenance, private access, exchange, yield programs, bridge workflows, compliance, vault, and governance concepts.",
   },
   {
-    title: "Betting",
-    eyebrow: "Entertainment and prediction markets",
-    icon: Trophy,
+    name: "BridgeTree Finance",
+    url: "https://bridgetreefinance.com/",
+    status: "Live / In Development",
+    category: ["Finance", "Digital Assets"],
     description:
-      "A modern betting platform focused on secure transactions, transparent odds, user engagement, and scalable entertainment experiences.",
-    points: ["Sports and events", "Responsible gaming", "Real-time engagement"],
+      "A finance vertical focused on non-custodial digital asset yield, lending, and asset-backed financial workflows.",
   },
   {
-    title: "Real Estate",
-    eyebrow: "Property, ownership, and access",
-    icon: Building2,
+    name: "AIHK",
+    url: "https://aihk.space/",
+    status: "Live",
+    category: ["Property", "AI"],
     description:
-      "A real estate network connecting physical assets with digital ownership, smart financing, and broader access to property-backed opportunities.",
-    points: ["Property marketplace", "Smart financing", "Asset-backed models"],
+      "A Hong Kong AI property platform for owner-direct listings, agent-supported transactions, AI property search, listing tools, maps, and real-estate market workflows.",
   },
   {
-    title: "AI Health",
-    eyebrow: "Intelligent healthcare services",
-    icon: HeartPulse,
+    name: "SatiStay",
+    url: "https://satistay.space/",
+    status: "In Development",
+    category: ["Property", "Marketplace"],
     description:
-      "AI-powered health solutions that support smarter diagnostics, wellness monitoring, care navigation, and data-informed health decisions.",
-    points: ["AI assistance", "Preventive care", "Health intelligence"],
+      "A property rental and accommodation platform focused on homes, rentals, property discovery, owner listings, agent listings, and property-manager listings.",
   },
   {
-    title: "Livelihood",
-    eyebrow: "Income, opportunity, and daily life",
-    icon: Users,
+    name: "HomeHK",
+    url: "https://homehk.org/",
+    status: "Live",
+    category: ["Civic Tech", "Public Data"],
     description:
-      "A livelihood platform built around jobs, services, creator income, local commerce, and practical tools that help people earn and grow.",
-    points: ["Income tools", "Local services", "Community growth"],
+      "A Hong Kong daily-life information platform for weather, transport, parking, public facilities, price comparison, restaurants, utilities, recycling, libraries, beaches, and public data.",
   },
   {
-    title: "RWA",
-    eyebrow: "Real-world assets on digital rails",
-    icon: Coins,
+    name: "Chicken Dinner",
+    url: "https://chickendinner.space/",
+    status: "Live",
+    category: ["Prediction Markets", "Interface"],
     description:
-      "A real-world asset ecosystem connecting tangible value to digital markets through tokenization, asset management, and compliant access.",
-    points: ["Asset tokenization", "Digital ownership", "Liquidity pathways"],
+      "A Chinese-language Polymarket market discovery and prediction-market interface showing probabilities, volume, liquidity, trending markets, categories, and user-signed non-custodial workflows.",
+  },
+  {
+    name: "AI Health & Insurance Guide",
+    url: "https://aiinsurence.vercel.app/",
+    status: "MVP / Temporary Link",
+    category: ["AI", "Health", "Insurance"],
+    description:
+      "A Hong Kong-focused AI healthcare and insurance navigation assistant for safety triage support, symptom organization, potential department matching, and relevant insurance topic guidance. It is navigation support only, not medical diagnosis or regulated insurance advice.",
   },
 ];
 
-const stats = [
-  { value: "6", label: "Strategic sectors" },
-  { value: "1", label: "Connected ecosystem" },
-  { value: "24/7", label: "Digital-first access" },
-  { value: "Global", label: "Market ambition" },
-];
-
-const ecosystem = [
-  {
-    title: "Finance layer",
-    text: "Banking, wallets, payments, and asset movement form the foundation of the platform.",
-    icon: WalletCards,
-  },
-  {
-    title: "Asset layer",
-    text: "Real estate and RWA products connect physical value to digital ownership and liquidity.",
-    icon: Landmark,
-  },
-  {
-    title: "Life layer",
-    text: "AI health, livelihood, and entertainment products support practical daily use cases.",
-    icon: Layers3,
-  },
+const focusAreas = [
+  { icon: Building2, title: "Property & Real Estate Platforms" },
+  { icon: Landmark, title: "Finance & Digital Asset Workflows" },
+  { icon: Network, title: "Civic Data & Public Information" },
+  { icon: HeartPulse, title: "AI Navigation Tools" },
+  { icon: ArrowRight, title: "Emerging RWA Infrastructure" },
 ];
 
 function Nav() {
   const [open, setOpen] = useState(false);
-  const links = ["Ecosystem", "Sectors", "Vision", "Contact"];
 
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-        <a href="#top" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-slate-950 shadow-lg shadow-cyan-500/20">
-            <Globe2 className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-200">Heritage</p>
-            <p className="text-xs text-slate-400">Digital Holdings</p>
-          </div>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8" aria-label="Primary">
+        <a href="#top" className="text-lg font-semibold tracking-tight text-white">
+          RickyPark Holdings
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              className="text-sm font-medium text-slate-300 transition hover:text-white"
-            >
-              {link}
+          {navLinks.map((item) => (
+            <a key={item.href} href={item.href} className="text-sm text-slate-300 transition hover:text-white">
+              {item.label}
             </a>
           ))}
         </div>
 
-        <div className="hidden md:block">
-          <Button className="rounded-full bg-white px-5 text-slate-950 hover:bg-cyan-100">
-            Explore the Ecosystem
-          </Button>
-        </div>
+        <a href="#portfolio" className="hidden md:block">
+          <Button className="rounded-full bg-white text-slate-950 hover:bg-slate-200">View Portfolio</Button>
+        </a>
 
         <button
-          className="rounded-xl border border-white/10 p-2 text-white md:hidden"
+          className="rounded-xl border border-white/20 p-2 text-white md:hidden"
           onClick={() => setOpen((value) => !value)}
-          aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-label="Toggle navigation menu"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
-      </div>
+      </nav>
 
       {open && (
-        <div className="border-t border-white/10 bg-slate-950 px-5 py-4 md:hidden">
-          <div className="flex flex-col gap-4">
-            {links.map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                onClick={() => setOpen(false)}
-                className="text-sm font-medium text-slate-300"
-              >
-                {link}
+        <div className="border-t border-white/10 px-5 py-4 md:hidden">
+          <div className="flex flex-col gap-3">
+            {navLinks.map((item) => (
+              <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="text-slate-300">
+                {item.label}
               </a>
             ))}
           </div>
         </div>
       )}
-    </nav>
-  );
-}
-
-function SectionHeading({ eyebrow, title, text }) {
-  return (
-    <div className="mx-auto mb-12 max-w-3xl text-center">
-      <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">{eyebrow}</p>
-      <h2 className="text-3xl font-semibold tracking-tight text-white md:text-5xl">{title}</h2>
-      {text && <p className="mt-5 text-base leading-8 text-slate-300 md:text-lg">{text}</p>}
-    </div>
+    </header>
   );
 }
 
 export default function HeritageIntroSite() {
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const year = useMemo(() => new Date().getFullYear(), []);
+
+  useEffect(() => {
+    document.title = "RickyPark Holdings | Digital Platform Portfolio";
+
+    const metaDescription =
+      document.querySelector('meta[name="description"]') || document.createElement("meta");
+    metaDescription.setAttribute("name", "description");
+    metaDescription.setAttribute(
+      "content",
+      "RickyPark Holdings develops digital platforms across property, finance, AI tools, civic information, healthcare navigation, prediction markets, and emerging real-world asset infrastructure.",
+    );
+    if (!metaDescription.parentElement) document.head.appendChild(metaDescription);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]') || document.createElement("meta");
+    ogTitle.setAttribute("property", "og:title");
+    ogTitle.setAttribute("content", "RickyPark Holdings | Digital Platform Portfolio");
+    if (!ogTitle.parentElement) document.head.appendChild(ogTitle);
+
+    const ogDescription =
+      document.querySelector('meta[property="og:description"]') || document.createElement("meta");
+    ogDescription.setAttribute("property", "og:description");
+    ogDescription.setAttribute(
+      "content",
+      "RickyPark Holdings develops digital platforms across property, finance, AI tools, civic information, healthcare navigation, prediction markets, and emerging real-world asset infrastructure.",
+    );
+    if (!ogDescription.parentElement) document.head.appendChild(ogDescription);
+  }, []);
 
   return (
-    <main id="top" className="min-h-screen overflow-hidden bg-slate-950 text-white">
+    <main id="top" className="min-h-screen bg-slate-950 text-white">
       <Nav />
 
-      <section className="relative px-5 pb-20 pt-32 lg:px-8 lg:pb-28 lg:pt-40">
-        <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.22),transparent_36%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.2),transparent_38%),linear-gradient(180deg,rgba(15,23,42,0),#020617_82%)]" />
-        <div className="absolute left-1/2 top-24 -z-0 h-72 w-72 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
-
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-sm text-cyan-100">
-              <Sparkles className="h-4 w-4" />
-              One company. Six high-growth digital sectors.
-            </div>
-
-            <h1 className="max-w-5xl text-5xl font-semibold tracking-tight text-white md:text-7xl lg:text-8xl">
-              Building the connected economy for finance, assets, health, and daily life.
-            </h1>
-
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-              Heritage Digital Holdings brings together Web3.0 banking, betting, real estate, AI health,
-              livelihood tools, and real-world assets into one integrated ecosystem designed for modern users,
-              investors, operators, and communities.
-            </p>
-
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Button size="lg" className="rounded-full bg-white px-7 text-slate-950 hover:bg-cyan-100">
-                Start Exploring <ArrowRight className="ml-2 h-4 w-4" />
+      <section className="mx-auto max-w-7xl px-5 pb-16 pt-16 lg:px-8 lg:pt-24">
+        <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950/40 p-8 shadow-2xl shadow-cyan-950/30 md:p-12">
+          <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
+            RickyPark Holdings builds practical digital platforms across property, finance, AI, public information,
+            and emerging asset infrastructure.
+          </h1>
+          <p className="mt-6 max-w-4xl text-lg leading-8 text-slate-300">
+            A portfolio of Hong Kong-focused and global digital products spanning real estate, fintech, civic
+            utilities, healthcare navigation, prediction markets, and real-world asset infrastructure.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#portfolio">
+              <Button className="w-full rounded-full bg-white text-slate-950 hover:bg-slate-200 sm:w-auto">
+                Explore Portfolio
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full border-white/20 bg-white/5 px-7 text-white hover:bg-white/10 hover:text-white"
-              >
-                View Our Verticals
+            </a>
+            <a href="#contact">
+              <Button variant="outline" className="w-full rounded-full border-white/30 bg-white/5 hover:bg-white/10 sm:w-auto">
+                Contact
               </Button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.15, duration: 0.7 }}
-            className="relative"
-          >
-            <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-2xl shadow-cyan-950/40 backdrop-blur">
-              <div className="rounded-[1.5rem] border border-white/10 bg-slate-900/80 p-5">
-                <div className="mb-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-slate-400">Ecosystem map</p>
-                    <p className="text-xl font-semibold text-white">Heritage Platform</p>
-                  </div>
-                  <div className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
-                    Active Vision
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  {verticals.map((item, index) => {
-                    const Icon = item.icon;
-                    return (
-                      <motion.div
-                        key={item.title}
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.25 + index * 0.07 }}
-                        className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
-                      >
-                        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-300/10 text-cyan-200">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <p className="text-sm font-semibold text-white">{item.title}</p>
-                        <p className="mt-1 text-xs leading-5 text-slate-400">{item.eyebrow}</p>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-white/[0.03] px-5 py-8 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-white/10 bg-slate-900/40 p-5 text-center">
-              <p className="text-3xl font-semibold text-white md:text-4xl">{stat.value}</p>
-              <p className="mt-2 text-sm text-slate-400">{stat.label}</p>
-            </div>
+      <section id="portfolio" className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+        <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Portfolio</h2>
+        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {projects.map((project) => (
+            <article
+              key={project.name}
+              className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-cyan-300/40 hover:bg-white/[0.06]"
+            >
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-3 py-1 text-xs text-cyan-200">
+                  {project.status}
+                </span>
+                {project.category.map((tag) => (
+                  <span key={tag} className="rounded-full border border-white/20 px-3 py-1 text-xs text-slate-300">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <h3 className="mt-4 text-xl font-semibold">{project.name}</h3>
+              <p className="mt-3 flex-1 text-sm leading-7 text-slate-300">{project.description}</p>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
+                aria-label={`Open ${project.name} in a new tab`}
+              >
+                Visit Project <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </article>
           ))}
         </div>
       </section>
 
-      <section id="ecosystem" className="px-5 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading
-            eyebrow="The ecosystem"
-            title="A single operating system for modern value."
-            text="Each business line can stand alone, but the real strength comes from how they connect: finance powers access, assets create value, and life services drive everyday adoption."
-          />
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {ecosystem.map((item, index) => {
+      <section id="focus-areas" className="bg-white/[0.03] py-16">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Focus Areas</h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+            {focusAreas.map((item) => {
               const Icon = item.icon;
               return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                >
-                  <Card className="h-full rounded-3xl border-white/10 bg-white/[0.04] text-white shadow-xl shadow-slate-950/20">
-                    <CardContent className="p-7">
-                      <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-slate-950">
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <h3 className="text-2xl font-semibold">{item.title}</h3>
-                      <p className="mt-4 leading-7 text-slate-300">{item.text}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
+                <div key={item.title} className="rounded-2xl border border-white/10 bg-slate-900/50 p-5">
+                  <Icon className="h-5 w-5 text-cyan-200" />
+                  <p className="mt-3 text-sm text-slate-200">{item.title}</p>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      <section id="sectors" className="bg-slate-900/40 px-5 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading
-            eyebrow="Our sectors"
-            title="Six pillars. One digital growth engine."
-            text="Heritage is positioned across the markets where technology, ownership, finance, health, and entertainment are converging."
-          />
-
-          <div className="grid gap-5 lg:grid-cols-2">
-            {verticals.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ delay: index * 0.05 }}
-                  className="group rounded-3xl border border-white/10 bg-slate-950/70 p-6 transition hover:-translate-y-1 hover:border-cyan-300/40 hover:bg-slate-950"
-                >
-                  <div className="flex flex-col gap-6 md:flex-row">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-cyan-300/10 text-cyan-200 transition group-hover:bg-cyan-300 group-hover:text-slate-950">
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">{item.eyebrow}</p>
-                      <h3 className="mt-2 text-2xl font-semibold text-white md:text-3xl">{item.title}</h3>
-                      <p className="mt-4 leading-7 text-slate-300">{item.description}</p>
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {item.points.map((point) => (
-                          <span
-                            key={point}
-                            className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-sm text-slate-300"
-                          >
-                            {point}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+      <section id="about" className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+        <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">About</h2>
+        <div className="mt-6 max-w-4xl space-y-5 text-slate-300">
+          <p>
+            RickyPark Holdings develops and manages a growing ecosystem of digital platforms. The portfolio is built
+            around practical products that organize information, simplify transactions, and create useful interfaces
+            for real-world services.
+          </p>
+          <p>
+            Some projects are live products, while others are MVPs or platforms under development. The portfolio is
+            intentionally broad, covering property, finance, AI, civic information, healthcare navigation, and
+            asset-backed infrastructure.
+          </p>
         </div>
       </section>
 
-      <section id="vision" className="relative px-5 py-24 lg:px-8">
-        <div className="absolute inset-0 -z-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.14),transparent_42%)]" />
-        <div className="relative z-10 mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-cyan-950/20 backdrop-blur md:p-12 lg:p-16">
-          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">The vision</p>
-              <h2 className="text-3xl font-semibold tracking-tight text-white md:text-5xl">
-                Make digital ownership useful in the real world.
-              </h2>
-            </div>
-            <div className="space-y-6 text-lg leading-8 text-slate-300">
-              <p>
-                Heritage is building a connected platform where people can bank, earn, invest, access property,
-                manage health, participate in entertainment, and hold real-world value through modern digital rails.
-              </p>
-              <p>
-                The opportunity is not only in launching separate products. It is in creating a shared ecosystem where
-                identity, payments, assets, data, and user relationships strengthen every vertical.
-              </p>
-              <div className="flex items-center gap-3 rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4 text-base text-emerald-100">
-                <ShieldCheck className="h-5 w-5 shrink-0" />
-                Built for scale, trust, compliance, and long-term market expansion.
-              </div>
-            </div>
-          </div>
+      <section id="contact" className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 md:p-10">
+          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Contact</h2>
+          <p className="mt-4 max-w-3xl text-slate-300">
+            For partnerships, product inquiries, or portfolio discussions, contact RickyPark Holdings.
+          </p>
+          <a href="mailto:hello@rickypark.com" className="mt-5 inline-block text-cyan-200 hover:text-cyan-100">
+            hello@rickypark.com
+          </a>
         </div>
       </section>
 
-      <section id="contact" className="px-5 pb-24 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] bg-white p-8 text-slate-950 md:p-12">
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Work with us</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
-                Partner with Heritage across the next generation of digital markets.
-              </h2>
-              <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-                We are connecting capital, technology, communities, and real-world utility across finance,
-                betting, real estate, AI health, livelihood, and RWA.
-              </p>
-            </div>
-            <Button size="lg" className="rounded-full bg-slate-950 px-7 text-white hover:bg-slate-800">
-              Contact the Team <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-white/10 px-5 py-8 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
-          <p>© {currentYear} Heritage Digital Holdings. All rights reserved.</p>
-          <div className="flex flex-wrap gap-4">
-            <a className="hover:text-white" href="#top">Home</a>
-            <a className="hover:text-white" href="#sectors">Sectors</a>
-            <a className="hover:text-white" href="#vision">Vision</a>
-          </div>
-        </div>
+      <footer className="border-t border-white/10 px-5 py-8 text-sm text-slate-400 lg:px-8">
+        <div className="mx-auto max-w-7xl">© {year} RickyPark Holdings. All rights reserved.</div>
       </footer>
     </main>
   );
