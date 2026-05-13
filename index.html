@@ -3,25 +3,210 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RickyPark Holdings</title>
-    <meta name="description" content="RickyPark Holdings digital platform portfolio." />
+    <title>RickyPark Holdings | Digital Platform Portfolio</title>
+    <meta
+      name="description"
+      content="RickyPark Holdings develops digital platforms across property, finance, AI tools, civic information, healthcare navigation, prediction markets, and emerging real-world asset infrastructure."
+    />
+    <meta property="og:title" content="RickyPark Holdings | Digital Platform Portfolio" />
+    <meta
+      property="og:description"
+      content="RickyPark Holdings develops digital platforms across property, finance, AI tools, civic information, healthcare navigation, prediction markets, and emerging real-world asset infrastructure."
+    />
     <style>
-      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin:0; background:#020617; color:#fff; }
-      main { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
-      h1 { font-size: clamp(2rem,5vw,3.25rem); line-height: 1.15; }
-      p { color:#cbd5e1; line-height:1.7; font-size:1.05rem; }
-      .card { margin-top:24px; border:1px solid rgba(255,255,255,.15); border-radius:16px; padding:20px; background:rgba(255,255,255,.03); }
-      a { color:#67e8f9; }
+      :root {
+        --bg: #050816;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface-strong: rgba(255, 255, 255, 0.08);
+        --text: #e5e7eb;
+        --muted: #a3adc2;
+        --accent: #5eead4;
+        --border: rgba(255, 255, 255, 0.14);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: radial-gradient(circle at top right, #153245 0%, transparent 45%), var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      a { color: inherit; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+      header {
+        position: sticky; top: 0; z-index: 50;
+        backdrop-filter: blur(12px);
+        background: rgba(5, 8, 22, 0.75);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav { display: flex; justify-content: space-between; align-items: center; padding: .95rem 0; gap: 1rem; }
+      .brand { font-weight: 650; letter-spacing: .01em; text-decoration: none; }
+      .links { display: flex; gap: 1rem; flex-wrap: wrap; }
+      .links a, .btn { text-decoration: none; border-radius: 999px; padding: .55rem .95rem; transition: .2s ease; }
+      .links a:hover { background: var(--surface); }
+      .btn { display: inline-block; border: 1px solid var(--border); }
+      .btn.primary { background: #f8fafc; color: #111827; font-weight: 600; }
+      .btn.primary:hover { background: #dbeafe; }
+      .btn.secondary:hover { background: var(--surface); }
+      section { padding: 4.5rem 0; }
+      .hero {
+        margin-top: 1.5rem;
+        background: linear-gradient(145deg, rgba(10, 14, 30, .86), rgba(21, 50, 69, .35));
+        border: 1px solid var(--border);
+        border-radius: 1.4rem;
+        padding: 2rem;
+      }
+      h1 { font-size: clamp(2rem, 4.5vw, 3.7rem); line-height: 1.16; margin: 0 0 1rem; letter-spacing: -0.02em; }
+      h2 { font-size: clamp(1.65rem, 3vw, 2.5rem); line-height: 1.2; margin: 0; letter-spacing: -0.015em; }
+      p { color: var(--muted); margin: 0; }
+      .cta { margin-top: 1.6rem; display: flex; gap: .75rem; flex-wrap: wrap; }
+      .grid { margin-top: 1.6rem; display: grid; grid-template-columns: 1fr; gap: 1rem; }
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        background: var(--surface);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: .65rem;
+        transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      }
+      .card:hover { transform: translateY(-4px); border-color: rgba(94, 234, 212, .55); background: var(--surface-strong); }
+      .badges { display: flex; flex-wrap: wrap; gap: .45rem; }
+      .badge {
+        border-radius: 999px; padding: .23rem .62rem; font-size: .73rem;
+        border: 1px solid var(--border); color: #dbeafe;
+      }
+      .status { border-color: rgba(94, 234, 212, .6); color: #99f6e4; background: rgba(94, 234, 212, .1); }
+      .card h3 { margin: .15rem 0 0; font-size: 1.1rem; }
+      .visit { margin-top: auto; color: var(--accent); font-weight: 550; text-decoration: none; }
+      .visit:hover { text-decoration: underline; }
+      .focus-grid { margin-top: 1.4rem; display:grid; gap: .9rem; grid-template-columns: 1fr; }
+      .focus-item { border: 1px solid var(--border); border-radius: .9rem; padding: .85rem 1rem; background: rgba(148,163,184,.08); }
+      .about p + p { margin-top: .9rem; }
+      .contact { border: 1px solid var(--border); background: var(--surface); border-radius: 1rem; padding: 1.25rem; }
+      .mail { color: var(--accent); font-weight: 600; display: inline-block; margin-top: .75rem; }
+      footer { border-top: 1px solid var(--border); color: #93a0b8; padding: 1.2rem 0 2rem; font-size: .9rem; }
+      @media (min-width: 680px) {
+        .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .focus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .hero { padding: 2.5rem; }
+      }
+      @media (min-width: 1024px) {
+        .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .focus-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      }
     </style>
   </head>
   <body>
-    <main>
-      <h1>RickyPark Holdings</h1>
-      <p>RickyPark Holdings builds practical digital platforms across property, finance, AI, public information, and emerging asset infrastructure.</p>
-      <div class="card">
-        <h2>Deployment fixed</h2>
-        <p>If you can see this page, Vercel is now serving a valid root route instead of returning a 404 NOT_FOUND response.</p>
+    <header>
+      <div class="wrap nav">
+        <a class="brand" href="#top" aria-label="RickyPark Holdings home">RickyPark Holdings</a>
+        <nav class="links" aria-label="Primary">
+          <a href="#portfolio">Portfolio</a>
+          <a href="#focus-areas">Focus Areas</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a class="btn primary" href="#portfolio">View Portfolio</a>
       </div>
+    </header>
+
+    <main id="top" class="wrap">
+      <section>
+        <div class="hero">
+          <h1>RickyPark Holdings builds practical digital platforms across property, finance, AI, public information, and emerging asset infrastructure.</h1>
+          <p>A portfolio of Hong Kong-focused and global digital products spanning real estate, fintech, civic utilities, healthcare navigation, prediction markets, and real-world asset infrastructure.</p>
+          <div class="cta">
+            <a class="btn primary" href="#portfolio">Explore Portfolio</a>
+            <a class="btn secondary" href="#contact">Contact</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="portfolio" aria-labelledby="portfolio-heading">
+        <h2 id="portfolio-heading">Portfolio</h2>
+        <div class="grid">
+          <article class="card">
+            <div class="badges"><span class="badge status">Under Development</span><span class="badge">RWA</span><span class="badge">Infrastructure</span></div>
+            <h3>Heritage / RickyPark RWA Platform</h3>
+            <p>A developing real-world asset platform exploring exceptional asset registry, custody context, provenance, private access, exchange, yield programs, bridge workflows, compliance, vault, and governance concepts.</p>
+            <a class="visit" href="https://www.rickypark.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Heritage / RickyPark RWA Platform in a new tab">Visit project ↗</a>
+          </article>
+
+          <article class="card">
+            <div class="badges"><span class="badge status">Live / In Development</span><span class="badge">Finance</span><span class="badge">Digital Assets</span></div>
+            <h3>BridgeTree Finance</h3>
+            <p>A finance vertical focused on non-custodial digital asset yield, lending, and asset-backed financial workflows.</p>
+            <a class="visit" href="https://bridgetreefinance.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit BridgeTree Finance in a new tab">Visit project ↗</a>
+          </article>
+
+          <article class="card">
+            <div class="badges"><span class="badge status">Live</span><span class="badge">Property</span><span class="badge">AI</span></div>
+            <h3>AIHK</h3>
+            <p>A Hong Kong AI property platform for owner-direct listings, agent-supported transactions, AI property search, listing tools, maps, and real-estate market workflows.</p>
+            <a class="visit" href="https://aihk.space/" target="_blank" rel="noopener noreferrer" aria-label="Visit AIHK in a new tab">Visit project ↗</a>
+          </article>
+
+          <article class="card">
+            <div class="badges"><span class="badge status">In Development</span><span class="badge">Property</span><span class="badge">Marketplace</span></div>
+            <h3>SatiStay</h3>
+            <p>A property rental and accommodation platform focused on homes, rentals, property discovery, owner listings, agent listings, and property-manager listings.</p>
+            <a class="visit" href="https://satistay.space/" target="_blank" rel="noopener noreferrer" aria-label="Visit SatiStay in a new tab">Visit project ↗</a>
+          </article>
+
+          <article class="card">
+            <div class="badges"><span class="badge status">Live</span><span class="badge">Civic Tech</span><span class="badge">Public Information</span></div>
+            <h3>HomeHK</h3>
+            <p>A Hong Kong daily-life information platform for weather, transport, parking, public facilities, price comparison, restaurants, utilities, recycling, libraries, beaches, and public data.</p>
+            <a class="visit" href="https://homehk.org/" target="_blank" rel="noopener noreferrer" aria-label="Visit HomeHK in a new tab">Visit project ↗</a>
+          </article>
+
+          <article class="card">
+            <div class="badges"><span class="badge status">Live</span><span class="badge">Prediction Markets</span><span class="badge">Interface</span></div>
+            <h3>Chicken Dinner</h3>
+            <p>A Chinese-language Polymarket market discovery and prediction-market interface showing probabilities, volume, liquidity, trending markets, categories, and user-signed non-custodial workflows.</p>
+            <a class="visit" href="https://chickendinner.space/" target="_blank" rel="noopener noreferrer" aria-label="Visit Chicken Dinner in a new tab">Visit project ↗</a>
+          </article>
+
+          <article class="card">
+            <div class="badges"><span class="badge status">MVP / Temporary Link</span><span class="badge">AI</span><span class="badge">Health</span><span class="badge">Insurance</span></div>
+            <h3>AI Health &amp; Insurance Guide</h3>
+            <p>A Hong Kong-focused AI healthcare and insurance navigation assistant that helps users check urgent safety risks, organize symptoms, identify possible medical departments, and understand potentially relevant insurance areas. Navigation support only, not medical diagnosis or regulated insurance advice.</p>
+            <a class="visit" href="https://aiinsurence.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Visit AI Health and Insurance Guide in a new tab">Visit project ↗</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="focus-areas" aria-labelledby="focus-heading">
+        <h2 id="focus-heading">Focus Areas</h2>
+        <div class="focus-grid">
+          <div class="focus-item">Property &amp; Real Estate Platforms</div>
+          <div class="focus-item">Finance &amp; Digital Asset Workflows</div>
+          <div class="focus-item">Civic Data &amp; Public Information</div>
+          <div class="focus-item">AI Navigation Tools</div>
+          <div class="focus-item">Emerging RWA Infrastructure</div>
+        </div>
+      </section>
+
+      <section id="about" class="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">About</h2>
+        <p>RickyPark Holdings develops and manages a growing ecosystem of digital platforms. The portfolio is built around practical products that organize information, simplify transactions, and create useful interfaces for real-world services.</p>
+        <p>Some projects are live products, while others are MVPs or platforms under development. The portfolio is intentionally broad, covering property, finance, AI, civic information, healthcare navigation, and asset-backed infrastructure.</p>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-heading">
+        <div class="contact">
+          <h2 id="contact-heading">Contact</h2>
+          <p>For partnerships, product inquiries, or portfolio discussions, contact RickyPark Holdings.</p>
+          <a class="mail" href="mailto:hello@rickypark.com">hello@rickypark.com</a>
+        </div>
+      </section>
     </main>
+
+    <footer>
+      <div class="wrap">© 2026 RickyPark Holdings. All rights reserved.</div>
+    </footer>
   </body>
 </html>
